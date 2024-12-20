@@ -1,0 +1,141 @@
+.login-maincontainer{
+    height: 100vh;
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.bg-img2{
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    filter: blur(3px);
+    position: absolute;
+    z-index: 2;
+}
+.login-subcontainer{
+    height: 70%;
+    width: 55%;
+    position: absolute;
+    z-index: 3;
+    background-color: white;
+    border-radius: 10px;
+    display: flex;
+}
+.login-left{
+    height: 100%;
+    width: 50%;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+}
+.login-left img{
+    position: absolute;
+    z-index: 2;
+    height: 100%;
+    width: 100%;
+    border-radius: 10px 0 0 10px;
+}
+.welcome-text2{
+    height: 28%;
+    width: 100%;
+    position: absolute;
+    z-index: 3;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    padding: 20px;
+    box-sizing: border-box;
+}
+.welcome-text2 h2{
+    font-size: 25px;
+    font-weight: bold;
+}
+.welcome-text2 span{
+    font-weight: 500;
+    font-size: 15px;
+    text-align: justify;
+}
+.login-right{
+    height: 100%;
+    width: 50%;
+    padding: 20px;
+    box-sizing: border-box;
+}
+.login-header{
+    height: 20%;
+    width: 100%;
+    display: flex;
+    align-items: end;
+
+}
+.login-header h2{
+    font-size: 32px;
+    font-weight: bold;
+}
+.login-inputs{
+    height: 30%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: start;
+    margin-top: 5%;
+}
+.login-inputs input{
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    background-color: #e6fcff;
+    border: 1px solid #009EFF;
+    box-sizing: border-box;
+}
+.error-container2{
+    height: 7%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    color: red;
+}
+.error-container2 span{
+    font-weight: 500;
+}
+.login-btn{
+    height: 15%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.login-btn button{
+    padding: 10px;
+    width: 47%;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 60px;
+    background-color: #00E7FF;
+    color: white;
+    transition: 0.3s;
+    cursor: pointer;
+}
+.login-btn button:hover{
+    color: #009EFF;
+    background-color: #C5FFF8;
+}
+.signup-link{
+    height: 10%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+}
