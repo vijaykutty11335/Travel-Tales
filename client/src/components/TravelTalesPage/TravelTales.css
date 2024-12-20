@@ -9,7 +9,7 @@
     font-style: normal;
 }
 *::selection{
-    background-color: #5defff;
+    background-color: #00E7FF;
 }
 
 ::-webkit-scrollbar {
@@ -140,33 +140,6 @@
 .card-tale span {
     font-size: 15px;
 }
-
-/* .card-locations {
-    height: 30%;
-    width: 100%;
-    display: flex;
-    align-items: center;
-}
-
-.card-locations span {
-    background-color: #d3fffa;
-    padding: 3px 5px;
-    font-size: 15px;
-    color: #009EFF;
-    font-weight: 600;
-} */
- /* .card-locations{
-    height: auto;
-    display: flex;
-    color: #009EFF;
-    align-items: center;
-    width: auto;
-
- }
- .card-locations span{
-
-    padding: 3px 5px;
- } */
   .card-locations{
     height: 30%;
     width: 
