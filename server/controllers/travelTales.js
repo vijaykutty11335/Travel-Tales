@@ -4,6 +4,7 @@ const TravelTales = require('../models/travelTales');
 const upload = require('../multer');
 const fs = require('fs');
 const path = require('path');
+const { warn } = require('console');
 const router = express.Router();
 router.use(cors());
 
@@ -14,7 +15,7 @@ router.post('/addTravelTales', upload.single('imageUrl'), async(req,res) => {
 
     if(!req.file) return res.status(400).json({message: "Image file is required!"});
 
-    const imageUrl = `http://localhost:3000/api/travelTales/${req.file.filename}`;
+    const imageUrl = req.file.filename;
 
     if(!title || !tale || !imageUrl || !visitedLocations || !visitedDate) return res.status(403).json({message: "All fileds are required"});
 
@@ -45,11 +46,10 @@ router.put('/updateTravelTale/:id', upload.single('imageUrl'), async(req,res) =>
         traveltale.visitedLocations = JSON.parse(visitedLocations);
 
         if(imageUrl){
-            if(traveltale.imageUrl){
-                fs.unlinkSync = path.join(__dirname, '../',traveltale.imageUrl);
-            }
-        traveltale.imageUrl = imageUrl;
+                fs.unlinkSync(path.join(__dirname, '../uploads', traveltale.imageUrl));
+                traveltale.imageUrl = imageUrl;
         }
+
         await traveltale.save();
         res.status(200).json({message: "Travel Tale is updated successfully!", traveltale});
 
@@ -57,7 +57,7 @@ router.put('/updateTravelTale/:id', upload.single('imageUrl'), async(req,res) =>
         console.error("An error occured",error.message);
         res.status(500).json({message: "An error occured"});
     }
-})
+});
 
 //Get all Tarvel Tales
 router.get('/getallTravelTales', async(req,res) => {
@@ -69,12 +69,15 @@ router.get('/getallTravelTales', async(req,res) => {
         console.error("An error occured", error.message);
         res.status(500).json({message: "An error occured"});
     }
-})
+});
 
 //delete travel tale by id
 router.delete('/deleteTravelTale/:id', async(req,res) => {
     try{
         const traveltale = await TravelTales.findByIdAndDelete(req.params.id);
+        if(!traveltale) return res.status(404).json({message: "Travel Tale not found"});
+        
+        fs.unlinkSync(path.join(__dirname, '../uploads', traveltale.imageUrl));
         res.status(200).json({message: "Travel Tale deleted successfully!", traveltale});
 
     } catch(error) { 
