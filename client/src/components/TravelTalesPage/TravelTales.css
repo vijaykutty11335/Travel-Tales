@@ -68,6 +68,7 @@
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
     position: relative;
     transition: 0.3s;
+    background-color: #f6fdff;
 }
 .tale-container:hover{
     transform: scale(1.02);
@@ -92,7 +93,7 @@
 }
 
 .card-img {
-    height: 55%;
+    height: 57%;
     width: 100%;
     user-select: none;
 }
@@ -105,7 +106,7 @@
 }
 
 .card-texts {
-    height: 45%;
+    height: 43%;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -163,10 +164,12 @@
     margin-right: 5px;
   }
 .maincontainer.blurred{
-    filter: blur(4px);
-    opacity: 0.7;
+    filter: blur(5px);
+    opacity: 0.6;
     pointer-events: none;
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    position: fixed;
 }
 
 .fav-icon.visible{

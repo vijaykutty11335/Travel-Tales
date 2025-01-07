@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { IoAddOutline } from "react-icons/io5";
 import { IoClose } from "react-icons/io5";
 import '../AddTalesContainer/Addtales.css';
@@ -55,7 +55,7 @@ const AddTales = ({addTaleVisible, setAddTaleVisible}) => {
     formData.append('title', fields.title);
     formData.append('tale', fields.tale);
     formData.append('visitedDate', fields.visitedDate);
-    formData.append('visitedLocations', JSON.stringify(locations));
+    formData.append('visitedLocations', locations.join(', '));
     
     const imgFile = fileInputRef.current.files[0];
     if(imgFile){
@@ -63,13 +63,16 @@ const AddTales = ({addTaleVisible, setAddTaleVisible}) => {
     }
 
     try{
-      await axios.post('http://localhost:3000/api/tales/addtales', formData, {
+      await axios.post('http://localhost:3000/api/travelTales/addTravelTales', formData, {
         headers : {
           'Content-Type' : 'multipart/form-data'
         }
       });
-      toast.success("Travel Tale Added successfully!");
       setError("");
+      setAddTaleVisible(false);
+      setLocations([]);
+      setFields({title: "", tale: "", visitedDate: ""});
+      setSelectedImg(null);
 
     } catch(error) {
       console.log(error.message);

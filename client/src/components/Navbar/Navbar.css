@@ -90,3 +90,9 @@
 .logout-icon:hover{
     color: red;
 }
+.nav-container.blurred{
+    filter: blur(5px);
+    opacity: 0.6;
+    pointer-events: none;
+    background-color: rgba(0, 0, 0, 0.2);
+}

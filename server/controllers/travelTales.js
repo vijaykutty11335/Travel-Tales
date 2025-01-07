@@ -18,11 +18,10 @@ router.post('/addTravelTales', upload.single('imageUrl'), async(req,res) => {
     const imageUrl = req.file.filename;
 
     if(!title || !tale || !imageUrl || !visitedLocations || !visitedDate) return res.status(403).json({message: "All fileds are required"});
-
-    const parsedVisitedDate = new Date(parseInt(visitedDate));
+    const parsedDate = new Date(visitedDate);
 
     try{
-        const travelTales = new TravelTales({title, tale, imageUrl, visitedLocations, visitedDate: parsedVisitedDate});
+        const travelTales = new TravelTales({title, tale, imageUrl, visitedLocations, visitedDate});
         await travelTales.save();
         res.status(201).json({message: "Travel Tale added successfully!", travelTales});
     } catch(error) {
@@ -70,6 +69,19 @@ router.get('/getallTravelTales', async(req,res) => {
         res.status(500).json({message: "An error occured"});
     }
 });
+
+//Get Travel Tale by Id
+router.get('/getTravelTaleById/:id', async(req,res) => {
+    try{
+        const travelTale = await TravelTales.findById(req.params.id);
+        if(!travelTale) return res.status(404).json({message: "Travel Tale not Found"});
+        res.status(200).json({message: "Tarvel Tale Fetched Successfully!", travelTale});
+    }
+    catch(error){
+        console.error("An error occured");
+        res.status(500).json({message: "An error occured"});
+    }
+})
 
 //delete travel tale by id
 router.delete('/deleteTravelTale/:id', async(req,res) => {

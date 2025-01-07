@@ -26,6 +26,7 @@ const Login = () => {
                 navigate('/travelTales')
             }, 3000);
             setError("");
+            setFormdata({email: "", password: ""});
 
         } catch( error) { 
             setError(error.response?.data?.message || "An error occured");

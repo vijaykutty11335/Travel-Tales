@@ -4,9 +4,10 @@ import { IoSearch } from "react-icons/io5";
 import { MdLogout } from "react-icons/md";
 import {useNavigate} from "react-router-dom";
 
-const Navbar = () => {
+const Navbar = ({ setSearchTerm, addTaleVisible, taleViewerVisible }) => {
 
     const [name, setName] = useState("");
+    const [search, setSearch] = useState("");
 
     const navigate = useNavigate();
 
@@ -22,14 +23,16 @@ const Navbar = () => {
         navigate('/login');
     }
 
+    
+
   return (
     <>
-        <div className='nav-container'>
+         <div className={`nav-container ${addTaleVisible || taleViewerVisible ? "blurred" : ""}`}>
             <div className='nav-logo'>
                 <span>Travel Tales</span>
             </div>
             <div className='search-group'>
-                <input type="text"placeholder='Search Tales...' />
+                <input type="text"placeholder='Search Tales...' value={search} onChange={(e) => {setSearch(e.target.value); setSearchTerm(e.target.value)}}/>
                 <IoSearch className='search-icon'/>
             </div>
             <div className='nav-user'>
