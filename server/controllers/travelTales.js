@@ -19,9 +19,10 @@ router.post('/addTravelTales', upload.single('imageUrl'), async(req,res) => {
 
     if(!title || !tale || !imageUrl || !visitedLocations || !visitedDate) return res.status(403).json({message: "All fileds are required"});
     const parsedDate = new Date(visitedDate);
+    const formattedDate = new Date(parsedDate);
 
     try{
-        const travelTales = new TravelTales({title, tale, imageUrl, visitedLocations, visitedDate});
+        const travelTales = new TravelTales({title, tale, imageUrl, visitedLocations, visitedDate: formattedDate});
         await travelTales.save();
         res.status(201).json({message: "Travel Tale added successfully!", travelTales});
     } catch(error) {
@@ -42,7 +43,7 @@ router.put('/updateTravelTale/:id', upload.single('imageUrl'), async(req,res) =>
         traveltale.title = title;
         traveltale.tale = tale;
         traveltale.visitedDate = new Date(visitedDate);
-        traveltale.visitedLocations = JSON.parse(visitedLocations);
+        // traveltale.visitedLocations = JSON.parse(visitedLocations);
 
         if(imageUrl){
                 fs.unlinkSync(path.join(__dirname, '../uploads', traveltale.imageUrl));
@@ -78,7 +79,7 @@ router.get('/getTravelTaleById/:id', async(req,res) => {
         res.status(200).json({message: "Tarvel Tale Fetched Successfully!", travelTale});
     }
     catch(error){
-        console.error("An error occured");
+        console.log("error",error)
         res.status(500).json({message: "An error occured"});
     }
 })

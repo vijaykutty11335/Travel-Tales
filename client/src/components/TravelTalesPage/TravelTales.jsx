@@ -6,6 +6,7 @@ import { IoAddCircle } from "react-icons/io5";
 import { GrMapLocation } from "react-icons/gr";
 import AddTales from '../AddTalesContainer/AddTales';
 import axios from 'axios';
+import {format} from 'date-fns';
 
 const TravelTales = ({addTaleVisible, setAddTaleVisible, taleViewerVisible, setTaleViewerVisible, searchTerm, setSearchTerm, setTaleId}) => {
 
@@ -70,7 +71,7 @@ const filteredData = allTales.filter((item) => {
               <div className='card-title'>
                 <span>{tale.title}</span>
               </div>
-              <span className='card-date'>{tale.visitedDate}</span>
+              <span className='card-date'>{format(new Date(tale.visitedDate), 'MMMM dd, yyyy')}</span>
               <div className='card-tale'>
                 <span>{tale.tale}</span>
               </div>

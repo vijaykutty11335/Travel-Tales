@@ -37,7 +37,7 @@ const Navbar = ({ setSearchTerm, addTaleVisible, taleViewerVisible }) => {
             </div>
             <div className='nav-user'>
                 <div className='profile'>
-                <button className='user-initial'>{name.charAt(0).toUpperCase()}</button>
+                <span className='user-initial'>{name.charAt(0).toUpperCase()}</span>
                 <span className='username'>{name}</span>
                 </div>
                 <div className='logout'>

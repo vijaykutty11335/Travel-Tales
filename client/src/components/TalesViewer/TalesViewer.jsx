@@ -4,9 +4,12 @@ import { MdOutlineUpdate } from "react-icons/md";
 import { MdDeleteOutline } from "react-icons/md";
 import { IoClose } from "react-icons/io5";
 import { GrMapLocation } from "react-icons/gr";
+import { HiMiniSpeakerWave } from "react-icons/hi2";
+import { HiMiniSpeakerXMark } from "react-icons/hi2";
 import axios from 'axios';
+import {format} from 'date-fns';
 
-const TalesViewer = ({ taleViewerVisible, setTaleViewerVisible, taleId }) => {
+const TalesViewer = ({ taleViewerVisible, setTaleViewerVisible, taleId, setTaleUpdateId, setAddTaleVisible }) => {
     const [tale,setTale] =  useState(null);
 
     useEffect(() => {
@@ -27,15 +30,26 @@ const TalesViewer = ({ taleViewerVisible, setTaleViewerVisible, taleId }) => {
 
     if (!tale) return null;
 
+    const handleDeleteTale = async(id) => {
+        try{
+            await axios.delete(`http://localhost:3000/api/travelTales/deleteTravelTale/${id}`);
+            console.log("Travel Tale Deleted Successfully!");
+            setTaleViewerVisible(false);
+
+        } catch(error){
+            console.log("An error occured",error);
+        }
+    }
+
     return (
         <>
             <div className={`viewer-container ${taleViewerVisible ? "visible" : "hidden"}`}>
                 <div className='viewer-header'>
-                    <div className='update-btn'>
+                    <div className='update-btn' onClick={() => {setTaleUpdateId(tale._id); setTaleViewerVisible(false); setAddTaleVisible(true)}}>
                         <MdOutlineUpdate className='update-icon' />
                         <span>Update</span>
                     </div>
-                    <div className='delete-btn'>
+                    <div className='delete-btn' onClick={() => handleDeleteTale(tale._id)}>
                         <MdDeleteOutline className='delete-icon' />
                         <span>Delete</span>
                     </div>
@@ -48,7 +62,7 @@ const TalesViewer = ({ taleViewerVisible, setTaleViewerVisible, taleId }) => {
                 </div>
                 <div className='date-locations'>
                     <div className='date-container'>
-                        <span>{tale.visitedDate}</span>
+                        <span>{format(new Date(tale.visitedDate), 'MMMM dd, yyyy')}</span>
                     </div>
                     <div className='location-container'>
                         <div className='location-text'>
@@ -59,6 +73,9 @@ const TalesViewer = ({ taleViewerVisible, setTaleViewerVisible, taleId }) => {
                 </div>
                 <div className='img-container'>
                     <img src={`http://localhost:3000/uploads/${tale.imageUrl}`} alt={tale.title} />
+                </div>
+                <div className='text-speech'>
+                    <HiMiniSpeakerWave className='speakerOn-icon'/>
                 </div>
                 <div className='tale-viewer'>
                     <p>{tale.tale}</p>

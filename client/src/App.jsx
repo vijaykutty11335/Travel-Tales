@@ -12,6 +12,7 @@ const AppContent = () => {
   const [taleViewerVisible, setTaleViewerVisible] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [taleId, setTaleId] = useState("");
+  const [taleUpdateId, setTaleUpdateId] = useState("");
 
   const location = useLocation();
   const hideNavbar = ['/', '/login'];
@@ -22,8 +23,8 @@ const AppContent = () => {
           <Navbar setSearchTerm={setSearchTerm} addTaleVisible={addTaleVisible} taleViewerVisible={taleViewerVisible} />
         
         )}
-        <AddTales addTaleVisible={addTaleVisible} setAddTaleVisible={setAddTaleVisible} />
-        <TalesViewer taleViewerVisible={taleViewerVisible} setTaleViewerVisible={setTaleViewerVisible} taleId={taleId} />
+        <AddTales addTaleVisible={addTaleVisible} setAddTaleVisible={setAddTaleVisible} taleUpdateId={taleUpdateId} setTaleUpdateId={setTaleUpdateId}/>
+        <TalesViewer taleViewerVisible={taleViewerVisible} setTaleViewerVisible={setTaleViewerVisible} taleId={taleId} setAddTaleVisible={setAddTaleVisible} setTaleUpdateId={setTaleUpdateId}/>
         <Routes>
         <Route path='/travelTales' element={<TravelTales addTaleVisible={addTaleVisible} setAddTaleVisible={setAddTaleVisible} taleViewerVisible={taleViewerVisible} setTaleViewerVisible={setTaleViewerVisible} searchTerm={searchTerm} setSearchTerm={setSearchTerm} setTaleId={setTaleId}/>} />
         <Route path='/' element={<Signup />} />

@@ -23,7 +23,7 @@
 }
 .addStory-title{
     height: 100%;
-    width: 20%;
+    width: 30%;
     display: flex;
     align-items: center;
 }
@@ -52,6 +52,7 @@
 .form-addbtn{
     font-size: 20px;
     font-weight: bolder;
+    padding: 3px;
 }
 .addStory-btn span{
     font-weight: 600;
