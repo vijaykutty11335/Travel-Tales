@@ -8,9 +8,13 @@ import { HiMiniSpeakerWave } from "react-icons/hi2";
 import { HiMiniSpeakerXMark } from "react-icons/hi2";
 import axios from 'axios';
 import {format} from 'date-fns';
+import {useSpeechSynthesis} from 'react-speech-kit'
 
 const TalesViewer = ({ taleViewerVisible, setTaleViewerVisible, taleId, setTaleUpdateId, setAddTaleVisible }) => {
     const [tale,setTale] =  useState(null);
+    const [isSpeaking, setIsSpeaking] = useState(false);
+    const {speak, speaking, cancel} = useSpeechSynthesis();
+    console.log(isSpeaking);
 
     useEffect(() => {
         const FetchTaleById = async () => {
@@ -28,8 +32,6 @@ const TalesViewer = ({ taleViewerVisible, setTaleViewerVisible, taleId, setTaleU
         FetchTaleById();
     }, [taleId]);
 
-    if (!tale) return null;
-
     const handleDeleteTale = async(id) => {
         try{
             await axios.delete(`http://localhost:3000/api/travelTales/deleteTravelTale/${id}`);
@@ -40,6 +42,21 @@ const TalesViewer = ({ taleViewerVisible, setTaleViewerVisible, taleId, setTaleU
             console.log("An error occured",error);
         }
     }
+
+    useEffect(() => {
+        setIsSpeaking(speaking);
+    },[speaking])
+    
+    const textToSpeech = () => {
+        if(speaking){
+            cancel();
+        }
+        else if(tale?.tale){
+            speak({text: tale.tale});
+        }
+    }
+
+    if (!tale) return null;
 
     return (
         <>
@@ -54,7 +71,7 @@ const TalesViewer = ({ taleViewerVisible, setTaleViewerVisible, taleId, setTaleU
                         <span>Delete</span>
                     </div>
                     <div className='close-viewer'>
-                        <IoClose className='close-icon' onClick={() => setTaleViewerVisible(false)} />
+                        <IoClose className='close-icon' onClick={() => {setTaleViewerVisible(false); if(speaking) cancel(); setIsSpeaking(false)}} />
                     </div>
                 </div>
                 <div className='title-container'>
@@ -74,8 +91,8 @@ const TalesViewer = ({ taleViewerVisible, setTaleViewerVisible, taleId, setTaleU
                 <div className='img-container'>
                     <img src={`http://localhost:3000/uploads/${tale.imageUrl}`} alt={tale.title} />
                 </div>
-                <div className='text-speech'>
-                    <HiMiniSpeakerWave className='speakerOn-icon'/>
+                <div className='text-speech' onClick={textToSpeech}>
+                    {isSpeaking ? (<HiMiniSpeakerWave className='speakerOn-icon'/>) : (<HiMiniSpeakerXMark className='speakerOff-icon'/>)}
                 </div>
                 <div className='tale-viewer'>
                     <p>{tale.tale}</p>
