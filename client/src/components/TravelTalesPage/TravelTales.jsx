@@ -8,22 +8,31 @@ import AddTales from '../AddTalesContainer/AddTales';
 import axios from 'axios';
 import {format} from 'date-fns';
 
-const TravelTales = ({addTaleVisible, setAddTaleVisible, taleViewerVisible, setTaleViewerVisible, searchTerm, setSearchTerm, setTaleId}) => {
+const TravelTales = ({addTaleVisible, setAddTaleVisible, taleViewerVisible, setTaleViewerVisible, searchTerm, setSearchTerm, setTaleId, tales}) => {
 
-  const [isFav, setIsFav] = useState(false);
+  const [isFav, setIsFav] = useState({});
   const [allTales, setAllTales] = useState([]);
+  console.log("fav ",isFav);
 
-  const handleIsFav = () => {
-    setIsFav(!isFav);
-  }
+  const token = localStorage.getItem('token');
 
 useEffect(() => {
   const handleGetAllTraveltales = async() => {
     try{
-      const fetchedTales = await axios.get('http://localhost:3000/api/travelTales/getallTravelTales');
+      const fetchedTales = await axios.get('http://localhost:3000/api/travelTales/getallTravelTales', {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
       const talesArray = fetchedTales.data.travelTales;
       console.log(talesArray);
       setAllTales(talesArray);
+
+      const initialFav = {};
+      talesArray.forEach(tale => {
+        initialFav[tale._id] = tale.isFav;
+      })
+      setIsFav(initialFav);
 
   } catch(error) {
     console.error("An error occured", error.message);
@@ -35,17 +44,36 @@ useEffect(() => {
 
 const handleGetTravelTaleById = async(id) => {
   try{
-    const travelTale = await axios.get(`http://localhost:3000/api/travelTales/getTravelTaleById/${id}`);
+    const travelTale = await axios.get(`http://localhost:3000/api/travelTales/getTravelTaleById/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
     const taleArray = travelTale.data.travelTale;
     setTaleId(taleArray._id);
 
 
   } catch(error){
-    console.error(error.response?.data?.error?.message || "An error occured");
+    console.error(error.response?.data?.message || "An error occured");
   }
 }
 
-const filteredData = allTales.filter((item) => {
+const handleIsFav = async(id) => {
+  try{
+    const res = await axios.put(`http://localhost:3000/api/travelTales/updateFav/${id}`,{}, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    console.log(res.data.fav);
+    setIsFav(prevFav => ({...prevFav, [id] : res.data.fav}));
+
+  } catch(error){
+    console.error(error.response?.data?.message || "An error occured");
+  }
+}
+
+const filteredData = tales.filter((item) => {
     return(
       searchTerm === "" ||
       item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -63,7 +91,7 @@ const filteredData = allTales.filter((item) => {
           { filteredData.map((tale, index) => (
 
           <div className='tale-container' key={index}>
-            <MdFavorite className={`fav-icon ${isFav ? "visible" : ""}`}  onClick={handleIsFav}/>
+            <MdFavorite className={`fav-icon ${isFav[tale._id] ? "visible" : ""}`}  onClick={()=>{handleIsFav(tale._id)}}/>
             <div className='card-img'>
               <img src={`http://localhost:3000/uploads/${tale.imageUrl}`} alt={tale.title}/>
             </div>

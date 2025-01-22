@@ -10,13 +10,15 @@ import { ToastContainer, toast } from 'react-toastify';
 import axios from "axios";
 
 
-const AddTales = ({ addTaleVisible, setAddTaleVisible, taleUpdateId, setTaleUpdateId }) => {
+const AddTales = ({ addTaleVisible, setAddTaleVisible, taleUpdateId, setTaleUpdateId, refreshTales }) => {
   const [locations, setLocations] = useState([]);
   const [inputLocation, setInputLocation] = useState("");
   const [selectedImg, setSelectedImg] = useState(null);
   const [error, setError] = useState("");
   const [fields, setFields] = useState({ title: "", tale: "", visitedDate: "" });
   const fileInputRef = useRef(null);
+
+  const token = localStorage.getItem('token');
 
   const handleAddLocation = () => {
     if (inputLocation.trim()) {
@@ -50,7 +52,11 @@ const AddTales = ({ addTaleVisible, setAddTaleVisible, taleUpdateId, setTaleUpda
     if (taleUpdateId) {
       const handleFetchTale = async () => {
         try {
-          const res = await axios.get(`http://localhost:3000/api/travelTales/getTravelTaleById/${taleUpdateId}`);
+          const res = await axios.get(`http://localhost:3000/api/travelTales/getTravelTaleById/${taleUpdateId}`, {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          });
           console.log("from taleById ", res);
           setFields({
             title: res.data.travelTale.title,
@@ -88,7 +94,12 @@ const AddTales = ({ addTaleVisible, setAddTaleVisible, taleUpdateId, setTaleUpda
 
     try {
       if (taleUpdateId) {
-        await axios.put(`http://localhost:3000/api/travelTales/updateTravelTale/${taleUpdateId}`, formData);
+        await axios.put(`http://localhost:3000/api/travelTales/updateTravelTale/${taleUpdateId}`, formData, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        refreshTales();
         console.log("Tale Updated Successfully!");
         setError("");
         setAddTaleVisible(false);
@@ -101,9 +112,11 @@ const AddTales = ({ addTaleVisible, setAddTaleVisible, taleUpdateId, setTaleUpda
       else {
         await axios.post('http://localhost:3000/api/travelTales/addTravelTales', formData, {
           headers: {
-            'Content-Type': 'multipart/form-data'
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${token}`
           }
         });
+        refreshTales();
         setError("");
         setAddTaleVisible(false);
         setLocations([]);

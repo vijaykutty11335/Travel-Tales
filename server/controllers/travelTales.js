@@ -5,11 +5,14 @@ const upload = require('../multer');
 const fs = require('fs');
 const path = require('path');
 const { warn } = require('console');
+const {authenticateToken} = require('../middlewares/authMiddleware');
 const router = express.Router();
 router.use(cors());
 
+
+
 //Create new TravelTales
-router.post('/addTravelTales', upload.single('imageUrl'), async(req,res) => {
+router.post('/addTravelTales', authenticateToken, upload.single('imageUrl'), async(req,res) => {
 
     const {title, tale, visitedLocations, visitedDate} = req.body;
 
@@ -22,7 +25,7 @@ router.post('/addTravelTales', upload.single('imageUrl'), async(req,res) => {
     const formattedDate = new Date(parsedDate);
 
     try{
-        const travelTales = new TravelTales({title, tale, imageUrl, visitedLocations, visitedDate: formattedDate});
+        const travelTales = new TravelTales({title, tale, imageUrl, visitedLocations, visitedDate: formattedDate, userId: req.user.userId});
         await travelTales.save();
         res.status(201).json({message: "Travel Tale added successfully!", travelTales});
     } catch(error) {
@@ -32,12 +35,12 @@ router.post('/addTravelTales', upload.single('imageUrl'), async(req,res) => {
 });
 
 //Update Travel Tale by Id
-router.put('/updateTravelTale/:id', upload.single('imageUrl'), async(req,res) => {
+router.put('/updateTravelTale/:id', authenticateToken, upload.single('imageUrl'), async(req,res) => {
     const {title, tale,visitedLocations, visitedDate} = req.body;
     const imageUrl = req.file ? req.file.filename : "";
     
     try{
-        const traveltale = await TravelTales.findById(req.params.id);
+        const traveltale = await TravelTales.findOne({_id: req.params.id, userId: req.user.userId});
         if(!traveltale) return res.status(404).json({message: "TravelTale not Found"});
 
         traveltale.title = title;
@@ -60,9 +63,9 @@ router.put('/updateTravelTale/:id', upload.single('imageUrl'), async(req,res) =>
 });
 
 //Get all Tarvel Tales
-router.get('/getallTravelTales', async(req,res) => {
+router.get('/getallTravelTales', authenticateToken, async(req,res) => {
     try{
-        const travelTales = await TravelTales.find();
+        const travelTales = await TravelTales.find({userId: req.user.userId});
         res.status(200).json({message: "All Travel Tales are retrived Successfully", travelTales});
 
     } catch(error) {
@@ -72,9 +75,9 @@ router.get('/getallTravelTales', async(req,res) => {
 });
 
 //Get Travel Tale by Id
-router.get('/getTravelTaleById/:id', async(req,res) => {
+router.get('/getTravelTaleById/:id', authenticateToken, async(req,res) => {
     try{
-        const travelTale = await TravelTales.findById(req.params.id);
+        const travelTale = await TravelTales.findOne({_id: req.params.id, userId: req.user.userId});
         if(!travelTale) return res.status(404).json({message: "Travel Tale not Found"});
         res.status(200).json({message: "Tarvel Tale Fetched Successfully!", travelTale});
     }
@@ -85,15 +88,30 @@ router.get('/getTravelTaleById/:id', async(req,res) => {
 })
 
 //delete travel tale by id
-router.delete('/deleteTravelTale/:id', async(req,res) => {
+router.delete('/deleteTravelTale/:id', authenticateToken, async(req,res) => {
     try{
-        const traveltale = await TravelTales.findByIdAndDelete(req.params.id);
+        const traveltale = await TravelTales.findByIdAndDelete({_id: req.params.id, userId: req.user.userId});
         if(!traveltale) return res.status(404).json({message: "Travel Tale not found"});
         
         fs.unlinkSync(path.join(__dirname, '../uploads', traveltale.imageUrl));
         res.status(200).json({message: "Travel Tale deleted successfully!", traveltale});
 
     } catch(error) { 
+        console.error("An error occured", error.message);
+        res.status(500).json({message: "An error occured"});
+    }
+})
+
+// Update FavouriteByid
+router.put('/updateFav/:id', authenticateToken, async(req,res) => {
+    try{
+        const travelTale = await TravelTales.findOne({_id: req.params.id, userId: req.user.userId});
+        if(!travelTale) return res.status(404).json({message: "Travel tale not Found"});
+
+        travelTale.isFav = !travelTale.isFav;
+        await travelTale.save();
+        res.status(200).json({message: "Favourite Tale status updated successfully!", fav:travelTale.isFav});
+    } catch(error){
         console.error("An error occured", error.message);
         res.status(500).json({message: "An error occured"});
     }

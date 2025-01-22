@@ -7,7 +7,7 @@ const travelTalesSchema = new mongoose.Schema({
     visitedLocations: { type: [String], default: [] },
     isFav: { type: Boolean, default: false },
     visitedDate: { type: Date, required: true },
-    // userId: { type: Schema.Types.ObjectId, ref: "User", required: true }
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true }
 })
 
 module.exports = mongoose.model("TravelTales", travelTalesSchema);

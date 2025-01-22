@@ -10,7 +10,6 @@ const Login = () => {
 
     const navigate = useNavigate();
 
-
     const handleChange = (e) => {
         setFormdata({...formdata, [e.target.name] : e.target.value});
     }

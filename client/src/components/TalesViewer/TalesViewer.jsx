@@ -10,17 +10,22 @@ import axios from 'axios';
 import {format} from 'date-fns';
 import {useSpeechSynthesis} from 'react-speech-kit'
 
-const TalesViewer = ({ taleViewerVisible, setTaleViewerVisible, taleId, setTaleUpdateId, setAddTaleVisible }) => {
+const TalesViewer = ({ taleViewerVisible, setTaleViewerVisible, taleId, setTaleUpdateId, setAddTaleVisible,refreshTales }) => {
     const [tale,setTale] =  useState(null);
     const [isSpeaking, setIsSpeaking] = useState(false);
     const {speak, speaking, cancel} = useSpeechSynthesis();
-    console.log(isSpeaking);
+
+    const token = localStorage.getItem('token');
 
     useEffect(() => {
         const FetchTaleById = async () => {
             if(!taleId) return;
             try {
-                const taleById = await axios.get(`http://localhost:3000/api/travelTales/getTravelTaleById/${taleId}`);
+                const taleById = await axios.get(`http://localhost:3000/api/travelTales/getTravelTaleById/${taleId}`, {
+                    headers: {
+                      Authorization: `Bearer ${token}`
+                    }
+                  });
                 const fetchedTale = taleById.data.travelTale;
                 console.log(fetchedTale);
                 setTale(fetchedTale);
@@ -34,7 +39,12 @@ const TalesViewer = ({ taleViewerVisible, setTaleViewerVisible, taleId, setTaleU
 
     const handleDeleteTale = async(id) => {
         try{
-            await axios.delete(`http://localhost:3000/api/travelTales/deleteTravelTale/${id}`);
+            await axios.delete(`http://localhost:3000/api/travelTales/deleteTravelTale/${id}`, {
+                headers: {
+                  Authorization: `Bearer ${token}`
+                }
+              });
+            refreshTales();
             console.log("Travel Tale Deleted Successfully!");
             setTaleViewerVisible(false);
 
