@@ -14,6 +14,10 @@ app.use('/api/user', require('./controllers/auth'));
 app.use('/api/travelTales', require('./controllers/travelTales'));
 app.use('/uploads', express.static('uploads'));
 
+app.get('/', (req, res) => {
+    res.send('Welcome to Travel Tales API!');
+  });
+  
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => console.log(`Server listening on Port ${PORT}...`));
