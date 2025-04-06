@@ -20,9 +20,7 @@ useEffect(() => {
   const handleGetAllTraveltales = async() => {
     try{
       const fetchedTales = await axios.get('https://travel-tales-8zwx.onrender.com/api/travelTales/getallTravelTales', {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+
       });
       const talesArray = fetchedTales.data.travelTales;
       console.log(talesArray);
