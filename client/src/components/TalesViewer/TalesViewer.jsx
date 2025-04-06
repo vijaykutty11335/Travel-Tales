@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import '../TalesViewer/talesViewer.css';
+import '../TalesViewer/TalesViewer.css';
 import { MdOutlineUpdate } from "react-icons/md";
 import { MdDeleteOutline } from "react-icons/md";
 import { IoClose } from "react-icons/io5";
