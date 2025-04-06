@@ -21,7 +21,7 @@ const TalesViewer = ({ taleViewerVisible, setTaleViewerVisible, taleId, setTaleU
         const FetchTaleById = async () => {
             if(!taleId) return;
             try {
-                const taleById = await axios.get(`http://localhost:3000/api/travelTales/getTravelTaleById/${taleId}`, {
+                const taleById = await axios.get(`https://travel-tales-8zwx.onrender.com/api/travelTales/getTravelTaleById/${taleId}`, {
                     headers: {
                       Authorization: `Bearer ${token}`
                     }
@@ -39,7 +39,7 @@ const TalesViewer = ({ taleViewerVisible, setTaleViewerVisible, taleId, setTaleU
 
     const handleDeleteTale = async(id) => {
         try{
-            await axios.delete(`http://localhost:3000/api/travelTales/deleteTravelTale/${id}`, {
+            await axios.delete(`https://travel-tales-8zwx.onrender.com/api/travelTales/deleteTravelTale/${id}`, {
                 headers: {
                   Authorization: `Bearer ${token}`
                 }
@@ -99,7 +99,7 @@ const TalesViewer = ({ taleViewerVisible, setTaleViewerVisible, taleId, setTaleU
                     </div>
                 </div>
                 <div className='img-container'>
-                    <img src={`http://localhost:3000/uploads/${tale.imageUrl}`} alt={tale.title} />
+                    <img src={`https://travel-tales-8zwx.onrender.com/uploads/${tale.imageUrl}`} alt={tale.title} />
                 </div>
                 <div className='text-speech' onClick={textToSpeech}>
                     {isSpeaking ? (<HiMiniSpeakerWave className='speakerOn-icon'/>) : (<HiMiniSpeakerXMark className='speakerOff-icon'/>)}

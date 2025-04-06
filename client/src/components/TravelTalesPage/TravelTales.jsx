@@ -19,7 +19,7 @@ const TravelTales = ({addTaleVisible, setAddTaleVisible, taleViewerVisible, setT
 useEffect(() => {
   const handleGetAllTraveltales = async() => {
     try{
-      const fetchedTales = await axios.get('http://localhost:3000/api/travelTales/getallTravelTales', {
+      const fetchedTales = await axios.get('https://travel-tales-8zwx.onrender.com/api/travelTales/getallTravelTales', {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -44,7 +44,7 @@ useEffect(() => {
 
 const handleGetTravelTaleById = async(id) => {
   try{
-    const travelTale = await axios.get(`http://localhost:3000/api/travelTales/getTravelTaleById/${id}`, {
+    const travelTale = await axios.get(`https://travel-tales-8zwx.onrender.com/api/travelTales/getTravelTaleById/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -60,7 +60,7 @@ const handleGetTravelTaleById = async(id) => {
 
 const handleIsFav = async(id) => {
   try{
-    const res = await axios.put(`http://localhost:3000/api/travelTales/updateFav/${id}`,{}, {
+    const res = await axios.put(`https://travel-tales-8zwx.onrender.com/api/travelTales/updateFav/${id}`,{}, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -93,7 +93,7 @@ const filteredData = tales.filter((item) => {
           <div className='tale-container' key={index}>
             <MdFavorite className={`fav-icon ${isFav[tale._id] ? "visible" : ""}`}  onClick={()=>{handleIsFav(tale._id)}}/>
             <div className='card-img'>
-              <img src={`http://localhost:3000/uploads/${tale.imageUrl}`} alt={tale.title}/>
+              <img src={`https://travel-tales-8zwx.onrender.com/uploads/${tale.imageUrl}`} alt={tale.title}/>
             </div>
             <div className='card-texts'  onClick={() => {setTaleViewerVisible(true); handleGetTravelTaleById(tale._id);}}>
               <div className='card-title'>

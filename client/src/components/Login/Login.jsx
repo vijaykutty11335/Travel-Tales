@@ -16,7 +16,7 @@ const Login = () => {
 
     const handleSubmit = async() => {
         try{
-            const res = await axios.post('http://localhost:3000/api/user/login', formdata);
+            const res = await axios.post('https://travel-tales-8zwx.onrender.com/api/user/login', formdata);
             toast.success("Logged in successfully!");
             const token = res.data.token;
             localStorage.setItem("token", token);
