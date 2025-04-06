@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { IoAddOutline } from "react-icons/io5";
 import { IoClose } from "react-icons/io5";
-import '../AddTalesContainer/Addtales.css';
+import '../AddTalesContainer/AddTales.css';
 import { AiOutlineFileImage } from "react-icons/ai";
 import { GrMapLocation } from "react-icons/gr";
 import { MdDeleteOutline } from "react-icons/md";
